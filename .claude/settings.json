@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(config/live.yaml)",
+      "Edit(docs/spec/**)",
+      "Edit(docs/risk_policy.md)",
+      "Edit(AGENTS.md)",
+      "Edit(CLAUDE.md)",
+      "Edit(.claude/**)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(gh pr merge*)",
+      "Bash(git merge*)"
+    ],
+    "ask": [
+      "Edit(src/centinela_trade/risk/**)",
+      "Edit(src/centinela_trade/execution/**)",
+      "Edit(src/centinela_trade/connectors/**)",
+      "Edit(config/**)",
+      "Bash(git push*)",
+      "Bash(pip install*)",
+      "Bash(*/pip install*)"
+    ]
+  }
+}

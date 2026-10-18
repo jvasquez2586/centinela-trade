@@ -1,0 +1,39 @@
+# Configuración LIVE — SOLO la edita un humano.
+# Fuente de los valores: docs/risk_policy.md y docs/spec/bot-v1.md §4.
+# Los secretos NUNCA van aquí: se leen de variables de entorno.
+
+environment: live
+
+exchange:
+  name: binance
+  market: spot
+  symbol: BTC/USDT
+  account_label: tradebot001        # subcuenta dedicada (ADR-003)
+
+strategy:
+  name: null                         # se define tras el backtest (ADR-002); live no arranca mientras sea null
+  timeframe: null
+
+risk:
+  max_capital_usd: 100
+  risk_per_trade_pct: 1.0
+  max_position_pct: 25.0
+  max_open_positions: 1
+  daily_loss_limit_pct: 3.0
+  drawdown_alert_pct: 10.0
+  max_drawdown_pct: 15.0
+  max_orders_per_hour: 6
+  max_consecutive_losses: 5
+  max_consecutive_api_errors: 3
+  max_disconnect_minutes_with_position: 5
+  slippage_breaker_multiplier: 3.0
+  slippage_breaker_trades: 5
+  volatility_pause_pct_1h: 8.0
+  price_band_pct: 2.0
+  min_stop_distance_pct: 0.5
+  max_stop_distance_pct: 15.0
+
+execution:
+  order_type: market
+  stop_limit_buffer_pct: 0.5
+  reconciliation_interval_minutes: 10

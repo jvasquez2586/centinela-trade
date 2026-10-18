@@ -1,0 +1,34 @@
+# Secretos
+.env
+*.env
+.secrets/
+
+# Datos y resultados locales
+data/
+logs/
+*.sqlite
+*.sqlite3
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Herramientas
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Editor
+.vscode/
+.idea/
+
+# Configuración local de Claude Code (la compartida es .claude/settings.json)
+.claude/settings.local.json
