@@ -1,6 +1,6 @@
 # Especificación del Bot v1 — Centinela Trade (`centinela-trade`)
 
-- **Versión:** 1.0
+- **Versión:** 1.1
 - **Estado:** Aprobada por el responsable del proyecto, 2026-10-18
 - **Autoridad:** este documento es la **fuente de verdad** del comportamiento del bot. Si contradice a `docs/plan.md`, prevalece este documento. Si contradice al código, el código está mal.
 - **Cambios:** solo los hace un humano, y cada cambio se registra en el historial al final. Ningún agente de IA modifica este archivo.
@@ -203,6 +203,16 @@ cantidad     = redondear_hacia_abajo(cantidad, step_size del exchange)
 
 **CFG-03.** `config/live.yaml` solo lo modifica un humano. Su esquema de claves es el de `config/live.yaml` del repo.
 
+**CFG-05. Credenciales por entorno.** Cada entorno lee únicamente las variables de entorno de su lista; las demás no se leen aunque existan en el sistema. La ausencia de una credencial necesaria la valida el componente que la usa (connector, alertas), no la carga de configuración.
+
+| Entorno o modo | Variables permitidas |
+|---|---|
+| `backtest` | Ninguna |
+| `dry-run` (usa la configuración de `paper`) | Ninguna: solo endpoints públicos |
+| `paper` | `BINANCE_DEMO_API_KEY`, `BINANCE_DEMO_API_SECRET`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` |
+| `live` (reservado; no se implementa en v1) | `BINANCE_LIVE_API_KEY`, `BINANCE_LIVE_API_SECRET`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` |
+| Tests marcados `network` | `BINANCE_TESTNET_API_KEY`, `BINANCE_TESTNET_API_SECRET`, leídas por los propios tests, nunca por `load_config` |
+
 **CFG-04.** Se calcula un `config_hash` (SHA-256 de la configuración efectiva normalizada, sin secretos) que se registra en cada fila de la bitácora.
 
 ### 4.6 Escalamiento de capital (live)
@@ -336,3 +346,4 @@ El Sprint 1 termina cuando: (1) `centinela backtest` ejecuta las 4 combinaciones
 | Versión | Fecha | Cambio | Autor |
 |---|---|---|---|
 | 1.0 | 2026-10-18 | Versión inicial aprobada | Juan Manuel Vásquez |
+| 1.1 | 2026-10-18 | CFG-05: credenciales permitidas por entorno | Juan Manuel Vásquez |
