@@ -1,0 +1,109 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "centinela-trade"
+version = "0.1.0"
+description = "Centinela Trade: BTC/USDT spot trading bot (spec docs/spec/bot-v1.md)."
+readme = "README.md"
+# ADR-001: a single Python version (3.14) across development, CI and production.
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "ccxt",
+    "pandas",
+    "pyarrow",
+    "pydantic>=2",
+    "structlog",
+    "typer",
+    "apscheduler",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "hypothesis",
+    "freezegun",
+    "ruff",
+    "mypy",
+    "pre-commit",
+]
+
+[project.scripts]
+centinela = "centinela_trade.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/centinela_trade"]
+
+# --- ruff -------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "DTZ", # naive datetimes are forbidden (UTC everywhere)
+    "RUF", # ruff-specific rules
+]
+
+# --- mypy -------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.14"
+mypy_path = "src"
+packages = ["centinela_trade"]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+# Strict typing in core/, risk/ and execution/ (AGENTS.md). `strict` is a
+# global-only flag in mypy, so its components are listed explicitly here.
+[[tool.mypy.overrides]]
+module = [
+    "centinela_trade.core",
+    "centinela_trade.core.*",
+    "centinela_trade.risk",
+    "centinela_trade.risk.*",
+    "centinela_trade.execution",
+    "centinela_trade.execution.*",
+]
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+extra_checks = true
+
+# --- pytest -----------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+# The `network` marker is registered in tests/conftest.py, next to its skip logic.
+addopts = ["--strict-markers", "--strict-config", "--import-mode=importlib", "-p", "pytester"]
+xfail_strict = true
+
+# --- coverage ---------------------------------------------------------------
+
+[tool.coverage.run]
+source = ["centinela_trade"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = false
