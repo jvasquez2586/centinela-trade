@@ -14,6 +14,7 @@ dependencies = [
     "pandas",
     "pyarrow",
     "pydantic>=2",
+    "pyyaml",
     "structlog",
     "typer",
     "apscheduler",
@@ -28,6 +29,7 @@ dev = [
     "ruff",
     "mypy",
     "pre-commit",
+    "types-PyYAML",
 ]
 
 [project.scripts]
