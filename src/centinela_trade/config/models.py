@@ -120,14 +120,16 @@ class LoggingConfig(_FrozenModel):
 class SecretsConfig(_FrozenModel):
     """Credentials, read only from environment variables, never from YAML.
 
-    All are optional at load time: backtests need none, and the components that need
-    one (connectors, alerts) must check for it. Excluded from ``config_hash`` (CFG-04).
+    Each environment fills only the fields of its CFG-05 list; the rest stay ``None``.
+    All are optional at load time: the component that needs one (connector, alerts)
+    checks for it (CFG-05). Testnet keys are not here: only ``network`` tests read
+    them. Excluded from ``config_hash`` (CFG-04).
     """
 
-    binance_testnet_api_key: SecretStr | None = None
-    binance_testnet_api_secret: SecretStr | None = None
     binance_demo_api_key: SecretStr | None = None
     binance_demo_api_secret: SecretStr | None = None
+    binance_live_api_key: SecretStr | None = None
+    binance_live_api_secret: SecretStr | None = None
     telegram_bot_token: SecretStr | None = None
     telegram_chat_id: SecretStr | None = None
 

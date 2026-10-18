@@ -21,9 +21,17 @@ BASE_FILE = "base.yaml"
 
 ENVIRONMENTS: tuple[str, ...] = get_args(Environment)
 
-#: ``SecretsConfig`` field -> environment variable it is read from: the field name in
-#: upper case, as listed in ``.env.example``.
-SECRET_ENV_VARS: dict[str, str] = {field: field.upper() for field in SecretsConfig.model_fields}
+_TELEGRAM_VARS = ("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID")
+
+#: CFG-05: the only environment variables each environment reads. Each variable fills
+#: the ``SecretsConfig`` field of the same name in lower case. Testnet keys appear in
+#: no list: only tests marked ``network`` read them, never ``load_config``. Dry-run
+#: reads none: it loads the paper config with an empty ``environ``.
+ENV_SECRET_VARS: dict[str, tuple[str, ...]] = {
+    "backtest": (),
+    "paper": ("BINANCE_DEMO_API_KEY", "BINANCE_DEMO_API_SECRET", *_TELEGRAM_VARS),
+    "live": ("BINANCE_LIVE_API_KEY", "BINANCE_LIVE_API_SECRET", *_TELEGRAM_VARS),
+}
 
 # Key names that look like credentials (same heuristic as spec LOG-04).
 _SECRET_KEY_MARKERS = ("key", "secret", "token", "password")
@@ -59,13 +67,14 @@ def load_config(
     config_dir: Path | None = None,
     environ: Mapping[str, str] | None = None,
 ) -> AppConfig:
-    """Load and validate the effective configuration for ``env`` (spec CFG-01, CFG-02).
+    """Load and validate the effective configuration for ``env`` (spec CFG-01, CFG-02, CFG-05).
 
     Args:
         env: ``backtest``, ``paper`` or ``live``.
         config_dir: directory holding ``base.yaml`` and ``<env>.yaml``; defaults to
             ``./config``.
-        environ: source of secrets; defaults to ``os.environ``.
+        environ: source of secrets; defaults to ``os.environ``. Only the variables
+            listed for ``env`` in ``ENV_SECRET_VARS`` are read from it (CFG-05).
 
     Raises:
         ConfigError: if anything is missing, malformed or out of range.
@@ -83,7 +92,7 @@ def load_config(
         )
 
     merged = _deep_merge(base, override)
-    merged["secrets"] = _read_secrets(os.environ if environ is None else environ)
+    merged["secrets"] = _read_secrets(env, os.environ if environ is None else environ)
     try:
         return AppConfig.model_validate(merged)
     except ValidationError as exc:
@@ -131,7 +140,7 @@ def _deep_merge(base: Mapping[str, Any], override: Mapping[str, Any]) -> dict[st
     return merged
 
 
-def _read_secrets(environ: Mapping[str, str]) -> SecretsConfig:
-    """Read credentials from ``environ``; empty variables count as unset."""
-    values = {field: environ.get(var) or None for field, var in SECRET_ENV_VARS.items()}
+def _read_secrets(env: str, environ: Mapping[str, str]) -> SecretsConfig:
+    """Read only the credentials allowed for ``env`` (CFG-05); empty counts as unset."""
+    values = {var.lower(): environ.get(var) or None for var in ENV_SECRET_VARS[env]}
     return SecretsConfig.model_validate(values)

@@ -11,8 +11,8 @@ from centinela_trade.config import config_hash, load_config
 WriteYaml = Callable[[Path, str, dict[str, Any]], None]
 
 FAKE_SECRETS = {
-    "BINANCE_TESTNET_API_KEY": "fake-testnet-key",  # pragma: allowlist secret
-    "BINANCE_TESTNET_API_SECRET": "fake-testnet-secret",  # pragma: allowlist secret
+    "BINANCE_DEMO_API_KEY": "fake-demo-key",  # pragma: allowlist secret
+    "BINANCE_DEMO_API_SECRET": "fake-demo-secret",  # pragma: allowlist secret
     "TELEGRAM_BOT_TOKEN": "fake-token",  # pragma: allowlist secret
 }
 

@@ -281,9 +281,9 @@ def test_config_is_immutable(config_data: dict[str, Any]) -> None:
 
 
 def test_secrets_are_hidden_from_repr_and_dump(config_data: dict[str, Any]) -> None:
-    secrets = SecretsConfig(binance_testnet_api_key=SecretStr("fake-key-for-tests"))
+    secrets = SecretsConfig(binance_demo_api_key=SecretStr("fake-key-for-tests"))
     config = AppConfig.model_validate({**config_data, "secrets": secrets})
-    assert config.secrets.binance_testnet_api_key is not None
+    assert config.secrets.binance_demo_api_key is not None
     assert "fake-key-for-tests" not in repr(config)
     assert "fake-key-for-tests" not in repr(config.secrets)
     assert "secrets" not in config.model_dump()
