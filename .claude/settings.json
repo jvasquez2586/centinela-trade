@@ -10,7 +10,9 @@
       "Bash(git push --force*)",
       "Bash(git push -f*)",
       "Bash(gh pr merge*)",
-      "Bash(git merge*)"
+      "Bash(git merge*)",
+      "Edit(docs/backlog.md)",
+      "Edit(docs/decisions/**)"
     ],
     "ask": [
       "Edit(src/centinela_trade/risk/**)",

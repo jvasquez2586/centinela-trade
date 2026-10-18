@@ -54,7 +54,7 @@ Marca de revisión: 🔴 revisión humana línea por línea + revisión adversar
 ### T07 — Gestor de riesgo y circuit breakers 🔴
 - **Tarea:** `risk/manager.py`, `risk/limits.py`, `risk/circuit_breakers.py`.
 - **Requisitos:** RISK-01 a RISK-11, CB-01 a CB-09.
-- **Aceptación:** 100% de cobertura de ramas; property tests con hypothesis: para cualquier entrada, una orden aprobada nunca excede ningún límite, y con un breaker abierto nada se aprueba; persistencia del breaker tras reinicio simulado.
+- **Aceptación:** 100% de cobertura de ramas; property tests con hypothesis: para cualquier entrada, una orden aprobada nunca excede ningún límite, y con un breaker abierto nada se aprueba; persistencia del breaker tras reinicio simulado; `make test` falla si la cobertura de ramas de `risk/` es menor a 100%.
 
 ### T08 — Bitácora 🟡
 - **Tarea:** `journal/` con el esquema de spec §7 en SQLite, migraciones simples y una API de escritura usada por estrategia, riesgo y ejecución.
@@ -69,7 +69,7 @@ Marca de revisión: 🔴 revisión humana línea por línea + revisión adversar
 ### T10 — Motor de ejecución 🔴
 - **Tarea:** `execution/engine.py` y `execution/order_state.py`.
 - **Requisitos:** EXE-01 a EXE-07.
-- **Aceptación:** 100% de cobertura de ramas; transiciones inválidas lanzan excepción; idempotencia; secuencia de salida EXE-04 incluido el caso de stop ya ejecutado; fallo del connector a mitad de operación no deja estado inconsistente.
+- **Aceptación:** 100% de cobertura de ramas; transiciones inválidas lanzan excepción; idempotencia; secuencia de salida EXE-04 incluido el caso de stop ya ejecutado; fallo del connector a mitad de operación no deja estado inconsistente; `make test` falla si la cobertura de ramas de `execution/` es menor a 100%.
 
 ### T11 — Motor de backtest, métricas y reporte 🟡
 - **Tarea:** `backtesting/engine.py` (loop vela a vela con los módulos de producción), `metrics.py` (VAL-07), `sensitivity.py` (VAL-08), `report.py` (markdown + curvas de equity y drawdown en `data/reports/<timestamp>/`, con config, `config_hash` y commit de git), comparación de las 4 combinaciones según §6.5, y métricas por ventana y régimen (VAL-03).
@@ -86,6 +86,8 @@ Marca de revisión: 🔴 revisión humana línea por línea + revisión adversar
 ---
 
 ## Después del Sprint 1 (no ejecutar todavía)
+
+- ADR-004: estrategia de bloqueo de versiones (lock file) antes de la Fase 3.
 
 - Ejecutar el backtest completo y redactar `docs/decisions/002-resultado-backtest.md` (humano).
 - Connector `paper` y `live_ccxt` apuntado a Demo Mode; alertas Telegram; reconciliación; kill switch (Fase 3).
