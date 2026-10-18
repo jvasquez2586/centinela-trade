@@ -1,0 +1,4 @@
+# Configuración de PAPER TRADING: sobrescribe config/base.yaml.
+# strategy se define tras el backtest (ADR-002). Los secretos se leen de variables de entorno.
+
+environment: paper
