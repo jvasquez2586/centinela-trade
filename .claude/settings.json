@@ -18,7 +18,6 @@
       "Edit(src/centinela_trade/risk/**)",
       "Edit(src/centinela_trade/execution/**)",
       "Edit(src/centinela_trade/connectors/**)",
-      "Edit(config/**)",
       "Bash(git push*)",
       "Bash(pip install*)",
       "Bash(*/pip install*)"
