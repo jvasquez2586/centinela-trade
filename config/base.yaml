@@ -1,0 +1,43 @@
+# Configuración común a todos los entornos (spec CFG-01).
+# Cada entorno (backtest.yaml, paper.yaml, live.yaml) sobrescribe lo que necesite.
+# Valores: los por defecto de docs/spec/bot-v1.md §4 y docs/risk_policy.md (no optimizados).
+# Los topes duros (CFG-02) se validan en el código; un valor fuera de rango impide arrancar.
+# Los secretos NUNCA van aquí: se leen de variables de entorno.
+
+exchange:
+  name: binance
+  market: spot
+  symbol: BTC/USDT
+  account_label: null
+
+strategy:
+  name: null                         # se define tras el backtest (ADR-002)
+  timeframe: null
+
+risk:
+  max_capital_usd: 100
+  risk_per_trade_pct: 1.0
+  max_position_pct: 25.0
+  max_open_positions: 1
+  daily_loss_limit_pct: 3.0
+  drawdown_alert_pct: 10.0
+  max_drawdown_pct: 15.0
+  max_orders_per_hour: 6
+  max_consecutive_losses: 5
+  max_consecutive_api_errors: 3
+  max_disconnect_minutes_with_position: 5
+  slippage_breaker_multiplier: 3.0
+  slippage_breaker_trades: 5
+  volatility_pause_pct_1h: 8.0
+  price_band_pct: 2.0
+  min_stop_distance_pct: 0.5
+  max_stop_distance_pct: 15.0
+
+execution:
+  order_type: market
+  stop_limit_buffer_pct: 0.5
+  reconciliation_interval_minutes: 10
+
+logging:
+  level: INFO
+  log_dir: logs

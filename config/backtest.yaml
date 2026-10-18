@@ -1,0 +1,4 @@
+# Configuración de BACKTEST: sobrescribe config/base.yaml.
+# El backtest evalúa las 4 combinaciones de spec §6.5, por eso strategy queda en null.
+
+environment: backtest
