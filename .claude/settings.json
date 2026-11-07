@@ -12,7 +12,9 @@
       "Bash(gh pr merge*)",
       "Bash(git merge*)",
       "Edit(docs/backlog.md)",
-      "Edit(docs/decisions/**)"
+      "Edit(docs/decisions/**)",
+      "Bash(git push origin main*)",
+      "Bash(git push origin HEAD:main*)"
     ],
     "ask": [
       "Edit(src/centinela_trade/risk/**)",

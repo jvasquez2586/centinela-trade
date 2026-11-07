@@ -69,3 +69,12 @@ Lee el spec y este archivo completos antes de cada tarea.
 - Toda orden pasa por `RiskManager.validate()`, sin excepción ni bypass.
 - Los módulos se comunican solo mediante los tipos de `core/models.py`.
 - El mismo loop corre en backtest, paper y live; solo cambia el connector.
+
+## Modo autónomo (sesiones en la nube sin humano disponible)
+
+Aplica solo cuando el prompt diga explícitamente "Modo autónomo". Reemplaza estas reglas:
+
+- **Push:** permitido solo de la rama de la tarea (`task/TNN-...`). Al terminar, abre un PR en **borrador** con el resumen exigido arriba. Nunca hagas push a `main` ni fusiones nada.
+- **Ambigüedad:** elige la opción más conservadora, impleméntala y regístrala en el PR bajo "Decisiones pendientes de aprobación".
+- **Detención obligatoria:** si la tarea exige cambiar el spec, los contratos de `core/`, o tocar `risk/` o `execution/` fuera de su alcance, detén la tarea, deja lo hecho en el PR en borrador y escribe la pregunta en él.
+- **Autorrevisión antes del PR:** `make lint` y `make test` en verde, y una segunda pasada comparando el código contra cada requisito citado en la tarea. Lista en el PR cualquier requisito que no hayas podido cumplir.
